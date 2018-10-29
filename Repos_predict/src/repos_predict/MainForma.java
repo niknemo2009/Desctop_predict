@@ -29,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
@@ -41,22 +42,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainForma extends javax.swing.JFrame {
 Connection con1;
-Set<String> spr_country=new TreeSet();
-Set<String> spr_team=new TreeSet(); 
 Vector<Vector<String>> data=new Vector<>();
 Vector<Vector<String>> dataHistory=new Vector<>();
  DefaultTableModel modTable;
  DefaultTableModel modelHistory;
  public JPopupMenu popup=new JPopupMenu();
 {
-    spr_country.add("Ukrain");
-    spr_country.add("USA");
-    spr_country.add("German");
-    spr_country.add("Poland");
-    spr_country.add("Spain");
-    for(int i=0;i<500;i++){
-        spr_team.add("Team "+ i);
-    }
+    
    for(BetToday temp:BetToday.testSpisok){
       if(temp.resultMatchGuest>-1){
           Vector<String> vec=new Vector<>();
@@ -96,13 +88,6 @@ Vector<Vector<String>> dataHistory=new Vector<>();
     public MainForma() {
         initComponents();
    jTable1.setDefaultRenderer(Object.class, new TableInfoRenderer());
-
-        DefaultComboBoxModel<String> mod_country=new DefaultComboBoxModel<>(new Vector<String>(spr_country));
-    jComboBox_country.setModel(mod_country);
-    DefaultComboBoxModel<String> mod_team1=new DefaultComboBoxModel<>(new Vector<String>(spr_team));
-    jComboBox_team_own.setModel(mod_team1);
-     DefaultComboBoxModel<String> mod_team2=new DefaultComboBoxModel<>(new Vector<String>(spr_team));
-    jComboBox_team_guest.setModel(mod_team2);
         
         Vector<String> name_column=new Vector<>();
        Vector<String> nameH_column=new Vector<>();
@@ -145,15 +130,8 @@ Vector<Vector<String>> dataHistory=new Vector<>();
     private void initComponents() {
 
         jToggleButton1 = new javax.swing.JToggleButton();
-        jSpinner1_dateTime = new javax.swing.JSpinner();
-        jTextField4_koef = new javax.swing.JTextField();
-        jTextField5_predict = new javax.swing.JTextField();
-        jButton_save = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jComboBox_country = new javax.swing.JComboBox<>();
-        jComboBox_team_own = new javax.swing.JComboBox<>();
-        jComboBox_team_guest = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -161,15 +139,6 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         jToggleButton1.setText("jToggleButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jSpinner1_dateTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1539361440000L), new java.util.Date(1539361440000L), new java.util.Date(1541611440000L), java.util.Calendar.DAY_OF_MONTH));
-
-        jButton_save.setText("Save");
-        jButton_save.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_saveActionPerformed(evt);
-            }
-        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -182,18 +151,7 @@ Vector<Vector<String>> dataHistory=new Vector<>();
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jTable1MouseReleased(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
-
-        jComboBox_country.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox_team_own.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox_team_guest.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -216,84 +174,29 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton_save)
-                    .addComponent(jTextField5_predict, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                    .addComponent(jTextField4_koef)
-                    .addComponent(jComboBox_country, 0, 139, Short.MAX_VALUE)
-                    .addComponent(jComboBox_team_own, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox_team_guest, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSpinner1_dateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))
-                        .addGap(19, 19, 19))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(205, 205, 205))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(342, 342, 342)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(83, 83, 83)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSpinner1_dateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox_country, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox_team_own, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox_team_guest, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField4_koef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField5_predict, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton_save)))
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(161, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_saveActionPerformed
-    try {
-        one();
-//        String country=jTextField1_country.getText();
-//        String team_own=jTextField2_team_own.getText();
-//        String team_guest=jTextField3_team_guest.getText();
-        String koef=jTextField4_koef.getText();
-        String predict=jTextField5_predict.getText();
-        Date date=(Date) jSpinner1_dateTime.getValue();
-        Statement st=con1.createStatement();
-//        String insertPred="INSERT INTO `predictiontotoday`.`information`"
-//                +"(`id_country_place`,`id_team1`,`id_team2`,"+"`prediction`,`keff`,"
-//                +"`date`) VALUES ("+country+","+team_own+","+team_guest+","+predict+","+koef+",null)";
-
-      //  st.execute(insertPred);
-        // TODO add your handling code here:
-    } catch (SQLException ex) {
-        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }//GEN-LAST:event_jButton_saveActionPerformed
-
-    private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
-int row=jTable1.getSelectedRow();
-        System.out.println(modTable.getValueAt(row, 2));
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseReleased
 
     /**
      * @param args the command line arguments
@@ -364,18 +267,11 @@ int row=jTable1.getSelectedRow();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_save;
-    private javax.swing.JComboBox<String> jComboBox_country;
-    private javax.swing.JComboBox<String> jComboBox_team_guest;
-    private javax.swing.JComboBox<String> jComboBox_team_own;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1_dateTime;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField4_koef;
-    private javax.swing.JTextField jTextField5_predict;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 
@@ -385,15 +281,35 @@ int row=jTable1.getSelectedRow();
 
           @Override
           public void actionPerformed(ActionEvent e) {
+             // Vector temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+              int currentRecords=jTable1.getSelectedRow();
+              Vector temp;
               switch(e.getActionCommand()){
                   case "Edit":
-                      new UpdatePrediction("edit").setVisible(true);
+                      if(currentRecords==-1){
+                          JOptionPane.showInternalMessageDialog(getContentPane(), "Выберите запись для редактирования .");
+                          return;
+                      }
+                        temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+                      new UpdatePrediction("edit",temp).setVisible(true);
+                      Vector temp1=UpdatePrediction.currentPredict;
+                      modTable.setValueAt(temp1.get(2), currentRecords, 2);
+                      modTable.setValueAt(temp1.get(3), currentRecords, 3);
+                      modTable.setValueAt(temp1.get(4), currentRecords, 4);
+                      modTable.setValueAt(temp1.get(5), currentRecords, 5);
+                      modTable.setValueAt(temp1.get(6), currentRecords, 6);
+                      jTable1.revalidate();
                       break;
                   case "Move to History":
-                      new UpdatePrediction("edit").setVisible(true);
+                      if(currentRecords==-1){
+                          JOptionPane.showInternalMessageDialog(getContentPane(), "Выберите запись для редактирования .");
+                          return;
+                      }
+                       temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+                      new UpdatePrediction("edit",temp).setVisible(true);
                       break;                   
                   case "Add new":
-                      new UpdatePrediction("add").setVisible(true);
+                      new UpdatePrediction("add",null).setVisible(true);
                       break;
                      
               }
@@ -408,14 +324,12 @@ int row=jTable1.getSelectedRow();
    popup.add(item = new JMenuItem("Move to History", new ImageIcon("2.gif")));
    item.setHorizontalTextPosition(JMenuItem.RIGHT);
    item.addActionListener(menuListener);
-    popup.setLabel("Justification");
-     popup.add(item = new JMenuItem("Add new", new ImageIcon("2.gif")));
+    popup.addSeparator();
+    popup.add(item = new JMenuItem("Add new", new ImageIcon("2.gif")));
    item.setHorizontalTextPosition(JMenuItem.RIGHT);
    item.addActionListener(menuListener);
     popup.setBorder(new BevelBorder(BevelBorder.RAISED));
-   // popup.addPopupMenuListener(new PopupPrintListener());
-
-    jTable1.addMouseListener(new MousePopupListener());
+   jTable1.addMouseListener(new MousePopupListener());
     
     }
     class MousePopupListener extends MouseAdapter {
@@ -429,21 +343,16 @@ int row=jTable1.getSelectedRow();
 
     public void mouseReleased(MouseEvent e) {
       checkPopup(e);
-        System.out.println("aasasasaa");
-       // System.out.println(modTable.getDataVector().elementAt(jTable1.getSelectedRow()));
-        Vector temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
-        for(Object prob:temp){
-           // System.out.println(prob.size());
-            System.out.println(prob);
+     // Vector temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+       // for(Object prob:temp){
+        //System.out.println(prob);
+        //}
         }
-    //System.out.println((Vector)(modTable.getDataVector().get(0).);
-      ///  System.out.println();
-    }
 
     private void checkPopup(MouseEvent e) {
-      if (e.isPopupTrigger()) {
+      //if (e.isPopupTrigger()) {
         popup.show(jTable1, e.getX(), e.getY());
-      }
+      //}
     }
   }
     class TableInfoRenderer extends DefaultTableCellRenderer {
