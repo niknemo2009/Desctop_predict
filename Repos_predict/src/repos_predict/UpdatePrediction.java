@@ -10,12 +10,15 @@ package repos_predict;
  * @author BigBoss
  */
 public class UpdatePrediction extends javax.swing.JFrame {
-
+String state;
     /**
      * Creates new form UpdatePrediction
      */
-    public UpdatePrediction() {
+    public UpdatePrediction(String state) {
+        
         initComponents();
+        this.setTitle(state.equals("edit")?"Редактирование ":"Добавление ");
+        this.jButton1.setText(state.equals("edit")?"Сохранить":"Добавить");
     }
 
     /**
@@ -35,8 +38,6 @@ public class UpdatePrediction extends javax.swing.JFrame {
         jComboBox_country = new javax.swing.JComboBox<>();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jSpinner1_dateTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1539361440000L), new java.util.Date(1539361440000L), new java.util.Date(1541611440000L), java.util.Calendar.DAY_OF_MONTH));
 
@@ -69,7 +70,7 @@ public class UpdatePrediction extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(jButton1)))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,11 +124,13 @@ public class UpdatePrediction extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UpdatePrediction().setVisible(true);
+                new UpdatePrediction("edit").setVisible(true);
             }
         });
     }

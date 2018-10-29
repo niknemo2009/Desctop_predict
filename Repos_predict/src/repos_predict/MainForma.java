@@ -6,7 +6,9 @@
 package repos_predict;
 
 
-import com.mysql.cj.protocol.Resultset;
+//import com.mysql.cj.protocol.Resultset;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -25,9 +27,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -90,6 +95,8 @@ Vector<Vector<String>> dataHistory=new Vector<>();
      */
     public MainForma() {
         initComponents();
+   jTable1.setDefaultRenderer(Object.class, new TableInfoRenderer());
+
         DefaultComboBoxModel<String> mod_country=new DefaultComboBoxModel<>(new Vector<String>(spr_country));
     jComboBox_country.setModel(mod_country);
     DefaultComboBoxModel<String> mod_team1=new DefaultComboBoxModel<>(new Vector<String>(spr_team));
@@ -141,7 +148,7 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         jSpinner1_dateTime = new javax.swing.JSpinner();
         jTextField4_koef = new javax.swing.JTextField();
         jTextField5_predict = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButton_save = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jComboBox_country = new javax.swing.JComboBox<>();
@@ -157,10 +164,10 @@ Vector<Vector<String>> dataHistory=new Vector<>();
 
         jSpinner1_dateTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1539361440000L), new java.util.Date(1539361440000L), new java.util.Date(1541611440000L), java.util.Calendar.DAY_OF_MONTH));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton_save.setText("Save");
+        jButton_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton_saveActionPerformed(evt);
             }
         });
 
@@ -211,7 +218,7 @@ Vector<Vector<String>> dataHistory=new Vector<>();
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1)
+                    .addComponent(jButton_save)
                     .addComponent(jTextField5_predict, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                     .addComponent(jTextField4_koef)
                     .addComponent(jComboBox_country, 0, 139, Short.MAX_VALUE)
@@ -248,21 +255,20 @@ Vector<Vector<String>> dataHistory=new Vector<>();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField5_predict, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(190, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField5_predict, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_save)))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_saveActionPerformed
     try {
         one();
 //        String country=jTextField1_country.getText();
@@ -281,9 +287,11 @@ Vector<Vector<String>> dataHistory=new Vector<>();
     } catch (SQLException ex) {
         Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
     }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton_saveActionPerformed
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
+int row=jTable1.getSelectedRow();
+        System.out.println(modTable.getValueAt(row, 2));
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -312,6 +320,8 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainForma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -354,7 +364,7 @@ Vector<Vector<String>> dataHistory=new Vector<>();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_save;
     private javax.swing.JComboBox<String> jComboBox_country;
     private javax.swing.JComboBox<String> jComboBox_team_guest;
     private javax.swing.JComboBox<String> jComboBox_team_own;
@@ -377,13 +387,15 @@ Vector<Vector<String>> dataHistory=new Vector<>();
           public void actionPerformed(ActionEvent e) {
               switch(e.getActionCommand()){
                   case "Edit":
-                      System.out.println("edit");
+                      new UpdatePrediction("edit").setVisible(true);
                       break;
                   case "Move to History":
-                      new UpdatePrediction().setVisible(true);
-                      
-                      System.out.println("to history");
-                    
+                      new UpdatePrediction("edit").setVisible(true);
+                      break;                   
+                  case "Add new":
+                      new UpdatePrediction("add").setVisible(true);
+                      break;
+                     
               }
                           
           }
@@ -397,6 +409,9 @@ Vector<Vector<String>> dataHistory=new Vector<>();
    item.setHorizontalTextPosition(JMenuItem.RIGHT);
    item.addActionListener(menuListener);
     popup.setLabel("Justification");
+     popup.add(item = new JMenuItem("Add new", new ImageIcon("2.gif")));
+   item.setHorizontalTextPosition(JMenuItem.RIGHT);
+   item.addActionListener(menuListener);
     popup.setBorder(new BevelBorder(BevelBorder.RAISED));
    // popup.addPopupMenuListener(new PopupPrintListener());
 
@@ -415,7 +430,14 @@ Vector<Vector<String>> dataHistory=new Vector<>();
     public void mouseReleased(MouseEvent e) {
       checkPopup(e);
         System.out.println("aasasasaa");
-        System.out.println(modTable.getDataVector().elementAt(jTable1.getSelectedRow()));
+       // System.out.println(modTable.getDataVector().elementAt(jTable1.getSelectedRow()));
+        Vector temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+        for(Object prob:temp){
+           // System.out.println(prob.size());
+            System.out.println(prob);
+        }
+    //System.out.println((Vector)(modTable.getDataVector().get(0).);
+      ///  System.out.println();
     }
 
     private void checkPopup(MouseEvent e) {
@@ -424,4 +446,19 @@ Vector<Vector<String>> dataHistory=new Vector<>();
       }
     }
   }
+    class TableInfoRenderer extends DefaultTableCellRenderer {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+ 
+        if(column==1) c.setHorizontalAlignment(CENTER);
+        else  c.setHorizontalAlignment(LEFT);
+        
+        
+        if(c.getText().equals("2.95")) c.setBackground(Color.green);
+        else c.setBackground(new JLabel().getBackground());
+        return c;
+    }
+}
 }
