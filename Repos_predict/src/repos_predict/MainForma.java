@@ -46,6 +46,7 @@ Vector<Vector<String>> data=new Vector<>();
 Vector<Vector<String>> dataHistory=new Vector<>();
  DefaultTableModel modTable;
  DefaultTableModel modelHistory;
+ UpdatePrediction editform;
  public JPopupMenu popup=new JPopupMenu();
 {
     
@@ -270,8 +271,8 @@ Vector<Vector<String>> dataHistory=new Vector<>();
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    public javax.swing.JTable jTable1;
+    public javax.swing.JTable jTable2;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 
@@ -281,35 +282,30 @@ Vector<Vector<String>> dataHistory=new Vector<>();
 
           @Override
           public void actionPerformed(ActionEvent e) {
-             // Vector temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
               int currentRecords=jTable1.getSelectedRow();
               Vector temp;
-              switch(e.getActionCommand()){
-                  case "Edit":
-                      if(currentRecords==-1){
+              Vector temp1;
+              if(currentRecords==-1& (!e.getActionCommand().equals("add")) ){
                           JOptionPane.showInternalMessageDialog(getContentPane(), "Выберите запись для редактирования .");
                           return;
                       }
-                        temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
-                      new UpdatePrediction("edit",temp).setVisible(true);
-                      Vector temp1=UpdatePrediction.currentPredict;
-                      modTable.setValueAt(temp1.get(2), currentRecords, 2);
-                      modTable.setValueAt(temp1.get(3), currentRecords, 3);
-                      modTable.setValueAt(temp1.get(4), currentRecords, 4);
-                      modTable.setValueAt(temp1.get(5), currentRecords, 5);
-                      modTable.setValueAt(temp1.get(6), currentRecords, 6);
+               temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+              switch(e.getActionCommand()){
+                  case "Edit":                       
+                      editform=new UpdatePrediction("edit",temp,MainForma.this);
+                      editform.setVisible(true);
+                      
                       jTable1.revalidate();
                       break;
-                  case "Move to History":
-                      if(currentRecords==-1){
-                          JOptionPane.showInternalMessageDialog(getContentPane(), "Выберите запись для редактирования .");
-                          return;
-                      }
-                       temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
-                      new UpdatePrediction("edit",temp).setVisible(true);
+                  case "Move to History":                       
+                      editform=new UpdatePrediction("move",temp,MainForma.this);
+                              editform.setVisible(true);
+                       //temp1=UpdatePrediction.currentPredict;
+                      
                       break;                   
                   case "Add new":
-                      new UpdatePrediction("add",null).setVisible(true);
+                      editform=new UpdatePrediction("add",null,MainForma.this);
+                      editform.setVisible(true);
                       break;
                      
               }
