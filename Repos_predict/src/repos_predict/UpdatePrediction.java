@@ -25,30 +25,38 @@ MainForma parent;
         this.data=data;
         this.parent=parent;
         initComponents();
-        this.setTitle(state.equals("edit")?"Редактирование ":"Добавление ");
+        this.setTitle(state.equals("edit")?"Редактирование ":state.equals("move")?"Перенос в историю":"Добавление ");
         this.jButton1.setText(state.equals("edit")?"Сохранить":state.equals("move")?"Перенести":"Добавить");
         if(this.state.equals("edit")){            
             jTextField_country.setText((String) data.get(2));
             jTextField_teamOwner.setText((String) data.get(3));
-            jTextField_koef.setText((String) data.get(6));
-            jTextField_teamGuest.setText((String) data.get(4));
-            jTextField_predict.setText((String) data.get(5));
+            jTextField_teamGuest.setText((String) data.get(5));
+            jTextField_predict.setText((String) data.get(7));
+             jTextField_koef.setText((String) data.get(8));
              jTextField_owner_gol.setVisible(false);
             jTextField_guest_gol.setVisible(false);
             jComboBox_state.setVisible(false);
+            jLabel_gol1.setVisible(false);
+            jLabel_gol2.setVisible(false);
             currentPredict=data;
             
         }
         if(this.state.equals("move")){
-            //System.out.println(data);
             jTextField_country.setText((String) data.get(2));
             jTextField_teamOwner.setText((String) data.get(3));
-            jTextField_koef.setText((String) data.get(6));
-            jTextField_teamGuest.setText((String) data.get(4));
-            jTextField_predict.setText((String) data.get(5));
-             jTextField_owner_gol.setVisible(false);
-            jTextField_guest_gol.setVisible(false);
-            jComboBox_state.setVisible(false);
+            jTextField_teamGuest.setText((String) data.get(5));
+            jTextField_predict.setText((String) data.get(7));
+             jTextField_koef.setText((String) data.get(8));
+             jTextField_country.setEnabled(false);
+             jTextField_teamGuest.setEnabled(false);
+             jTextField_teamOwner.setEnabled(false);
+             jTextField_predict.setEnabled(false);
+             jTextField_koef.setEnabled(false);
+             jTextField_owner_gol.setVisible(true);
+            jTextField_guest_gol.setVisible(true);
+            jComboBox_state.setVisible(true);
+            jLabel_gol1.setVisible(true);
+            jLabel_gol2.setVisible(true);
             currentPredict=data;
             
         }
@@ -60,6 +68,10 @@ MainForma parent;
             jTextField_teamGuest.setText("");
             jTextField_predict.setText("");
             jComboBox_state.setVisible(false);
+             jTextField_owner_gol.setVisible(false);
+            jTextField_guest_gol.setVisible(false);
+            jLabel_gol1.setVisible(false);
+            jLabel_gol2.setVisible(false);
            // currentPredict=data;
             
         }
@@ -90,8 +102,8 @@ MainForma parent;
         jLabel5 = new javax.swing.JLabel();
         jTextField_owner_gol = new javax.swing.JTextField();
         jTextField_guest_gol = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel_gol2 = new javax.swing.JLabel();
+        jLabel_gol1 = new javax.swing.JLabel();
 
         jSpinner1_dateTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1539361440000L), new java.util.Date(1539361440000L), new java.util.Date(1541611440000L), java.util.Calendar.DAY_OF_MONTH));
 
@@ -114,9 +126,9 @@ MainForma parent;
 
         jLabel5.setText("Prediction -");
 
-        jLabel6.setText("Забитые голы-");
+        jLabel_gol2.setText("Забитые голы-");
 
-        jLabel8.setText("Забитые голы-");
+        jLabel_gol1.setText("Забитые голы-");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,51 +138,55 @@ MainForma parent;
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(221, 221, 221))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextField_teamGuest, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel6)
-                                        .addGap(13, 13, 13)
-                                        .addComponent(jTextField_guest_gol, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jSpinner1_dateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField_country, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(19, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField_teamOwner, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel8)
+                                .addComponent(jLabel_gol1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextField_owner_gol, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(133, 133, 133)
-                .addComponent(jButton1)
-                .addGap(27, 27, 27))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField_koef, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(0, 19, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox_state, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_predict, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(201, 201, 201))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(97, 97, 97)
+                                .addComponent(jTextField_teamGuest, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel_gol2)
+                                .addGap(13, 13, 13)
+                                .addComponent(jTextField_guest_gol, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(123, 123, 123)
+                                .addComponent(jButton1)
+                                .addGap(27, 27, 27))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField_koef, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jComboBox_state, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextField_predict, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(153, 153, 153)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,14 +202,14 @@ MainForma parent;
                     .addComponent(jTextField_teamOwner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_owner_gol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel_gol1))
+                .addGap(69, 69, 69)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField_teamGuest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
+                    .addComponent(jLabel_gol2)
                     .addComponent(jTextField_guest_gol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_koef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -205,7 +221,7 @@ MainForma parent;
                 .addComponent(jComboBox_state, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -213,26 +229,35 @@ MainForma parent;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        if(this.state.equals("edit")){
+//           jTextField_country.setText((String) data.get(2));
+//            jTextField_teamOwner.setText((String) data.get(3));
+//            jTextField_teamGuest.setText((String) data.get(5));
+//            jTextField_predict.setText((String) data.get(7));
+//             jTextField_koef.setText((String) data.get(8));
         currentPredict.set(2, jTextField_country.getText());
         currentPredict.set(3, jTextField_teamOwner.getText());
-        currentPredict.set(4, jTextField_teamGuest.getText());
-        currentPredict.set(5, jTextField_predict.getText());
-        currentPredict.set(6, jTextField_koef.getText());
+        currentPredict.set(5, jTextField_teamGuest.getText());
+        currentPredict.set(7, jTextField_predict.getText());
+        currentPredict.set(8, jTextField_koef.getText());
          this.setVisible(false);
         // temp1=UpdatePrediction.currentPredict;
                       parent.modTable.setValueAt(currentPredict.get(2),parent.jTable1.getSelectedRow(), 2);
                       parent.modTable.setValueAt(currentPredict.get(3),parent.jTable1.getSelectedRow(), 3);
-                      parent.modTable.setValueAt(currentPredict.get(4), parent.jTable1.getSelectedRow(), 4);
                       parent.modTable.setValueAt(currentPredict.get(5), parent.jTable1.getSelectedRow(), 5);
-                      parent.modTable.setValueAt(currentPredict.get(6), parent.jTable1.getSelectedRow(), 6);
+                      parent.modTable.setValueAt(currentPredict.get(7), parent.jTable1.getSelectedRow(), 7);
+                      parent.modTable.setValueAt(currentPredict.get(8), parent.jTable1.getSelectedRow(), 8);
        }
         if(this.state.equals("move")){
+ this.setVisible(false);
          Vector temp=(Vector) parent.modTable.getDataVector().elementAt(parent.jTable1.getSelectedRow());
-         data.add(jComboBox_state.getSelectedItem().toString());
+         temp.set(4,jTextField_owner_gol.getText());
+         temp.set(6, jTextField_guest_gol.getText());
+         temp.set(9,jComboBox_state.getSelectedItem().toString());
          parent.modTable.removeRow(parent.jTable1.getSelectedRow());
-                       parent.modelHistory.addRow(data);
+                       parent.modelHistory.addRow(temp);
        }
        if(this.state.equals("add")){
+            this.setVisible(false);
            System.out.println("add 1");
        }
         // TODO add your handling code here:
@@ -284,8 +309,8 @@ MainForma parent;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel_gol1;
+    private javax.swing.JLabel jLabel_gol2;
     private javax.swing.JSpinner jSpinner1_dateTime;
     private javax.swing.JTextField jTextField_country;
     private javax.swing.JTextField jTextField_guest_gol;

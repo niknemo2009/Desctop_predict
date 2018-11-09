@@ -18,6 +18,8 @@ import java.util.Comparator;
 public class BetToday {
     long id;
     String country;
+    String flag_country="no_flag.jpg";
+    TypeSport typeSport=TypeSport.Football;
     LocalDateTime time;
     String teamOwner;
     String teamGuest;
@@ -25,7 +27,7 @@ public class BetToday {
     int resultMatchGuest=-1;
     String betPrediction;
     double keff;
-    StatePredict state;
+    String state;
     static final ArrayList<BetToday> testSpisok = new ArrayList<>();
 
     static {
@@ -41,7 +43,7 @@ public class BetToday {
                  "BOTH TEAMS SCORE", 1.87);
  temp.resultMatchGuest=2;
  temp.resultMatchOwner=3;
- temp.state=StatePredict.Sbylos;
+ temp.state="Positive";
     }
 
     public BetToday(String country, LocalDateTime time, String teamOwner, String teamGuest,

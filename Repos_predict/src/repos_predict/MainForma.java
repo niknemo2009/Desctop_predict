@@ -9,10 +9,17 @@ package repos_predict;
 //import com.mysql.cj.protocol.Resultset;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,14 +32,18 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -51,8 +62,8 @@ Vector<Vector<String>> dataHistory=new Vector<>();
 {
     
    for(BetToday temp:BetToday.testSpisok){
-      if(temp.resultMatchGuest>-1){
-          Vector<String> vec=new Vector<>();
+
+      Vector<String> vec=new Vector<>();
        vec.add(String.valueOf(temp.id));
        vec.add(temp.time.getHour()+" : "+temp.time.getMinute());
        vec.add(temp.country);
@@ -62,24 +73,13 @@ Vector<Vector<String>> dataHistory=new Vector<>();
        vec.add(String.valueOf(temp.resultMatchGuest));
        vec.add(temp.betPrediction);
        vec.add(String.valueOf(temp.keff));
-       vec.add(temp.state.name());
-       dataHistory.add(vec);
+       vec.add(temp.state);
+       if(temp.resultMatchGuest>-1){
+         dataHistory.add(vec);
       }else{
-           Vector<String> vec=new Vector<>();
-       vec.add(String.valueOf(temp.id));
-       vec.add(temp.time.getHour()+" : "+temp.time.getMinute());
-       vec.add(temp.country);
-       vec.add(temp.teamOwner);
-       //vec.add(String.valueOf(temp.resultMatchOwner));
-       vec.add(temp.teamGuest);
-      // vec.add(String.valueOf(temp.resultMatchGuest));
-       vec.add(temp.betPrediction);
-       vec.add(String.valueOf(temp.keff));
-       
-       data.add(vec);
+        data.add(vec);
       }
-       
-       
+            
    }
     
 }
@@ -88,22 +88,12 @@ Vector<Vector<String>> dataHistory=new Vector<>();
      */
     public MainForma() {
         initComponents();
-   jTable1.setDefaultRenderer(Object.class, new TableInfoRenderer());
+   jTable2.setDefaultRenderer(Object.class, new TableInfoRenderer());
         
-        Vector<String> name_column=new Vector<>();
+       // Vector<String> name_column=new Vector<>();
        Vector<String> nameH_column=new Vector<>();
        
         createRecords();
-        name_column.add("ID");
-        name_column.add("Time game");
-        name_column.add("Place game");
-        name_column.add("Team owner");
-       // name_column.add("Result 1");
-        name_column.add("Team guest");
-        //name_column.add("Result 2");
-        name_column.add("Prediction");
-        name_column.add("Koef");
-        
         nameH_column.add("ID");
         nameH_column.add("Time game");
         nameH_column.add("Place game");
@@ -114,11 +104,20 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         nameH_column.add("Prediction");
         nameH_column.add("Koef");
         nameH_column.add("State");
-        this.modTable=new DefaultTableModel(data, name_column);
+        this.modTable=new DefaultTableModel(data, nameH_column);
         jTable1.setModel(modTable);
+    jTable1.getSelectionModel().addListSelectionListener(new RowListener());
         this.modelHistory=new DefaultTableModel(dataHistory,nameH_column);
         jTable2.setModel(modelHistory);
     
+    }
+    private class RowListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent event) {
+            if (event.getValueIsAdjusting()) {
+                return;
+            }
+            System.out.println(jTable1.getSelectedRow());
+        }
     }
 
     /**
@@ -136,6 +135,8 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel_flag = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -154,6 +155,7 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jTable2.setAutoCreateRowSorter(true);
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -170,35 +172,86 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         jLabel1.setText("История");
 
+        jButton1.setText("Push");
+
+        jLabel_flag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/repos_predict/image/no_flag.jpg"))); // NOI18N
+        jLabel_flag.setToolTipText("");
+        jLabel_flag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_flagMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(25, 25, 25))
             .addGroup(layout.createSequentialGroup()
-                .addGap(342, 342, 342)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(332, 332, 332)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel_flag, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(83, 83, 83)
+                .addContainerGap()
+                .addComponent(jLabel_flag, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(96, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jLabel_flagMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_flagMouseClicked
+    JFileChooser fc = new JFileChooser();
+    int returnVal = fc.showOpenDialog(this); 
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+               File  file = fc.getSelectedFile();
+               Image img=null;
+        try {
+            img=ImageIO.read(file);
+        } catch (IOException ex) {
+            Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               img=getScaledImage(img, jLabel_flag.getWidth(),jLabel_flag.getHeight());
+                 jLabel_flag.setIcon(new ImageIcon(img));
+                
+//        try {
+//            System.out.println(file.getCanonicalPath());
+//        } catch (IOException ex) {
+//            Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+            } 
+     
+        
+        
+    }//GEN-LAST:event_jLabel_flagMouseClicked
+
+     
     /**
      * @param args the command line arguments
      */
@@ -236,39 +289,48 @@ Vector<Vector<String>> dataHistory=new Vector<>();
             }
         });
     }
-    
-    void one(){
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-   con1 = DriverManager.getConnection("jdbc:mysql://localhost/predictiontotoday?"
-           + "verifyServerCertificate=false&useLegacyDatetimeCode=false&serverTimezone=Europe/Kiev&useSSL=false&allowPublicKeyRetrieval=true","user","useruser");
-       Statement  st=con1.createStatement();
-        ResultSet rs=st.executeQuery("SELECT * FROM predictiontotoday.country");
-        while(rs.next()){
-            System.out.println(rs.getString(2)); 
-        }
-        rs.close();
-        st.close();
-   // Do something with the Connection
-//   DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sakila?" +
-//                 "useLegacyDatetimeCode=false&serverTimezone=Europe/Kiev&useSSL=false","root","gen");
-//verifyServerCertificate=false&amp;autoReconnect=false&amp;useSSL=false
-} catch (SQLException ex) {
-    // handle any errors
-    System.out.println("SQLException: " + ex.getMessage());
-    System.out.println("SQLState: " + ex.getSQLState());
-    System.out.println("VendorError: " + ex.getErrorCode());
-}   catch (ClassNotFoundException ex) {
-        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }
+ private Image getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+        return resizedImg;
+    }    
+//    void one(){
+//    try {
+//        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+//   con1 = DriverManager.getConnection("jdbc:mysql://localhost/predictiontotoday?"
+//           + "verifyServerCertificate=false&useLegacyDatetimeCode=false&serverTimezone=Europe/Kiev&useSSL=false&allowPublicKeyRetrieval=true","user","useruser");
+//       Statement  st=con1.createStatement();
+//        ResultSet rs=st.executeQuery("SELECT * FROM predictiontotoday.country");
+//        while(rs.next()){
+//            System.out.println(rs.getString(2)); 
+//        }
+//        rs.close();
+//        st.close();
+//   // Do something with the Connection
+////   DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sakila?" +
+////                 "useLegacyDatetimeCode=false&serverTimezone=Europe/Kiev&useSSL=false","root","gen");
+////verifyServerCertificate=false&amp;autoReconnect=false&amp;useSSL=false
+//} catch (SQLException ex) {
+//    // handle any errors
+//    System.out.println("SQLException: " + ex.getMessage());
+//    System.out.println("SQLState: " + ex.getSQLState());
+//    System.out.println("VendorError: " + ex.getErrorCode());
+//}   catch (ClassNotFoundException ex) {
+//        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+//    } catch (InstantiationException ex) {
+//        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+//    } catch (IllegalAccessException ex) {
+//        Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+//    }
+   // }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel_flag;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTable jTable1;
@@ -285,19 +347,21 @@ Vector<Vector<String>> dataHistory=new Vector<>();
               int currentRecords=jTable1.getSelectedRow();
               Vector temp;
               Vector temp1;
-              if(currentRecords==-1& (!e.getActionCommand().equals("add")) ){
+              if(currentRecords==-1& (!e.getActionCommand().equals("Add new")) ){
                           JOptionPane.showInternalMessageDialog(getContentPane(), "Выберите запись для редактирования .");
                           return;
                       }
-               temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
+               
               switch(e.getActionCommand()){
-                  case "Edit":                       
+                  case "Edit":
+                      temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());                       
                       editform=new UpdatePrediction("edit",temp,MainForma.this);
                       editform.setVisible(true);
                       
                       jTable1.revalidate();
                       break;
-                  case "Move to History":                       
+                  case "Move to History": 
+                      temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());                       
                       editform=new UpdatePrediction("move",temp,MainForma.this);
                               editform.setVisible(true);
                        //temp1=UpdatePrediction.currentPredict;
@@ -326,30 +390,19 @@ Vector<Vector<String>> dataHistory=new Vector<>();
    item.addActionListener(menuListener);
     popup.setBorder(new BevelBorder(BevelBorder.RAISED));
    jTable1.addMouseListener(new MousePopupListener());
-    
+    //jTable1.addMouseWheelListener(new MousePopupListener());
     }
     class MousePopupListener extends MouseAdapter {
-    public void mousePressed(MouseEvent e) {
-      checkPopup(e);
-    }
+    
+        public void mousePressed(MouseEvent e) {
+            if(e.getButton()==MouseEvent.BUTTON3){
+                popup.show(jTable1, e.getX(), e.getY());
+            }
+          }
 
-    public void mouseClicked(MouseEvent e) {
-      checkPopup(e);
-    }
+   
 
-    public void mouseReleased(MouseEvent e) {
-      checkPopup(e);
-     // Vector temp=(Vector) modTable.getDataVector().elementAt(jTable1.getSelectedRow());
-       // for(Object prob:temp){
-        //System.out.println(prob);
-        //}
-        }
-
-    private void checkPopup(MouseEvent e) {
-      //if (e.isPopupTrigger()) {
-        popup.show(jTable1, e.getX(), e.getY());
-      //}
-    }
+   
   }
     class TableInfoRenderer extends DefaultTableCellRenderer {
     @Override
@@ -361,8 +414,16 @@ Vector<Vector<String>> dataHistory=new Vector<>();
         else  c.setHorizontalAlignment(LEFT);
         
         
-        if(c.getText().equals("2.95")) c.setBackground(Color.green);
-        else c.setBackground(new JLabel().getBackground());
+        if(c.getText().equals("Positive")){
+            c.setBackground(Color.green);
+        }
+        if(c.getText().equals("Negative")){
+            c.setBackground(Color.red);
+        }
+         if(c.getText().equals("Perenos")){
+            c.setBackground(Color.yellow);
+        }
+        
         return c;
     }
 }
